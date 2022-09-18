@@ -127,24 +127,32 @@ function deleteLatestExcludedArticles(excludedCategoryLinks, excludedArticleKeyw
 }
 
 function deleteAll(){
-    const excludedCategoryLinks = [
-        "https://sport.delfi.ee",
-        "https://www.piletitasku.ee",
-        "https://tasku.delfi.ee"
-    ];
-    const excludedArticleKeywords = [
-        "horoskoop"
-    ]
+    chrome.storage.sync.get("newsCleanerConfig", ({newsCleanerConfig}) => {
+        const excludedCategoryLinks = newsCleanerConfig.excludedCategories.filter(c => c.isExcluded).map(c => c.link);
+        const excludedArticleKeywords = newsCleanerConfig.excludedArticleKeywords.filter(c => c.isExcluded).map(c => c.name);
+        const isSponsoredContentExcluded = newsCleanerConfig.isSponsoredContentExcluded;
 
-    if (document.URL === "https://www.delfi.ee/"){
-        deleteSisuturundus();
-        deleteExcludedCategorySections(excludedCategoryLinks);
-        deleteExcludedArticles(excludedCategoryLinks, excludedArticleKeywords);
-    }
-    if (document.URL.startsWith("https://www.delfi.ee/viimased")) {
-        deleteLatestSponsoredArticles();
-        deleteLatestExcludedArticles(excludedCategoryLinks, excludedArticleKeywords);
-    }
+        if (document.URL === "https://www.delfi.ee/"){
+            if (isSponsoredContentExcluded) {
+                deleteSisuturundus();
+            }
+            if (excludedCategoryLinks.length > 0) {
+                deleteExcludedCategorySections(excludedCategoryLinks);
+            }
+            if (excludedCategoryLinks.length > 0 || excludedArticleKeywords.length > 0) {
+                deleteExcludedArticles(excludedCategoryLinks, excludedArticleKeywords);
+            }
+        }
+        if (document.URL.startsWith("https://www.delfi.ee/viimased")) {
+            if (isSponsoredContentExcluded){
+                deleteLatestSponsoredArticles();
+            }
+            if (excludedCategoryLinks.length > 0 || excludedArticleKeywords.length > 0){
+                deleteLatestExcludedArticles(excludedCategoryLinks, excludedArticleKeywords);
+            }
+        }
+    });
+
 }
 
 function startDeleting() {
