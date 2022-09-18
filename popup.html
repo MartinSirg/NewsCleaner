@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-Currently removing categories: <strong>sport</strong>, <strong>piletitasku</strong>, <strong>podcasts</strong>, <strong>sisuturundus</strong>
+<div id="excluded-categories">
+    <h3 style="display: flex; justify-content: space-between"><span>Keelatud kategooriad</span> <button id="refresh-button">Refresh</button></h3>
+    <div id="excluded-categories__form">
+        <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 8px">
+            <input style="width: 200px" type="text" id="add-category-name" placeholder="Nimi"/>
+            <input style="width: 200px" type="text" id="add-category-link" placeholder="Link"/>
+            <button id="add-category-button">Lisa</button>
+        </div>
+        <div id="excluded-categories__form-validation-message" class="validation-errors">
+        </div>
+    </div>
+</div>
 <hr>
-Currently removing articles with keywords: <strong>horoskoop</strong>
+<div id="excluded-keywords">
+    <h3>Keelatud märksõnad</h3>
+    <div id="excluded-keywords__form" >
+        <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 8px">
+            <input style="width: 200px" type="text" id="add-keyword-name" placeholder="Nimi"/>
+            <button id="add-keyword-button">Lisa</button>
+        </div>
+    </div>
+    <div id="excluded-keywords__form-validation-message" class="validation-errors">
+    </div>
+</div>
+<hr>
+<div id="sponsored-content">
+    <h3>Sisuturundus</h3>
+</div>
+<script src="fill-exclusions.js"></script>
+<script src="add-form-event-listeners.js"></script>
 </body>
 </html>
